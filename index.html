@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>জনতার প্রতিনিধি</title>
+  <style>
+    body {
+      font-family: 'SolaimanLipi', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background: #008040;
+      color: white;
+      padding: 20px;
+    }
+    .slideshow-container {
+      max-width: 600px;
+      margin: 20px auto;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .slide {
+      display: none;
+    }
+    .slide img {
+      width: 100%;
+      height: auto;
+    }
+    .news-ticker {
+      background: #ffe0b2;
+      padding: 10px;
+      font-weight: bold;
+      color: #d84315;
+      margin: 10px;
+    }
+    section {
+      margin: 20px auto;
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #008040;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #006030;
+    }
+    .admin-panel {
+      background: #e0f7fa;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>খন্দকার মুফঃ আব্দুর রাকিব</h1>
+    <p>নওগাঁ-৬ (আত্রাই) | বাংলাদেশ জামায়াতে ইসলামী ⚖️</p>
+  </header>
+
+  <!-- 📸 স্লাইড শো -->
+  <div class="slideshow-container">
+    <div class="slide fade"><img src="slide1.jpg" alt="ছবি ১"></div>
+    <div class="slide fade"><img src="slide2.jpg" alt="ছবি ২"></div>
+    <div class="slide fade"><img src="slide3.jpg" alt="ছবি ৩"></div>
+  </div>
+
+  <!-- 📰 নিউজ ফিড -->
+  <div class="news-ticker">
+    <marquee behavior="scroll" direction="left" id="news-feed">লোড হচ্ছে...</marquee>
+  </div>
+
+  <!-- 📬 যোগাযোগ ফর্ম -->
+  <section>
+    <h2>যোগাযোগ করুন</h2>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="নাম" required>
+      <input type="text" name="phone" placeholder="মোবাইল নম্বর" required>
+      <input type="text" name="address" placeholder="ঠিকানা">
+      <textarea name="issue" placeholder="সমস্যার বিবরণ" required></textarea>
+      <select name="category">
+        <option>শিক্ষা</option>
+        <option>স্বাস্থ্য</option>
+        <option>কৃষি</option>
+        <option>রাস্তাঘাট</option>
+        <option>বিদ্যুৎ</option>
+      </select>
+      <button type="submit">জমা দিন</button>
+    </form>
+  </section>
+
+  <!-- 🗂️ ভোটার রেজিস্ট্রেশন -->
+  <section>
+    <h2>ভোটার রেজিস্ট্রেশন</h2>
+    <form id="voter-form">
+      <input type="text" name="voter_name" placeholder="ভোটারের নাম" required>
+      <input type="text" name="nid" placeholder="জাতীয় পরিচয়পত্র নম্বর" required>
+      <input type="text" name="area" placeholder="আবাসস্থল">
+      <button type="submit">রেজিস্টার করুন</button>
+    </form>
+  </section>
+
+  <!-- 🛠️ অ্যাডমিন প্যানেল (ডেমো) -->
+  <section class="admin-panel">
+    <h2>অ্যাডমিন প্যানেল (ডেমো)</h2>
+    <p>মোট সমস্যার সংখ্যা: <span id="issue-count">0</span></p>
+    <p>সর্বশেষ সমস্যা: <span id="latest-issue">লোড হচ্ছে...</span></p>
+  </section>
+
+  <script>
+    // 📸 স্লাইড শো
+    let slideIndex = 0;
+    showSlides();
+    function showSlides() {
+      let slides = document.getElementsByClassName("slide");
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) { slideIndex = 1 }
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 3000);
+    }
+
+    // 📰 SheetDB API থেকে নিউজ ফিড
+    fetch("https://sheetdb.io/api/v1/YOUR_SHEETDB_ID")
+      .then(res => res.json())
+      .then(data => {
+        let newsItems = data.map(item => item.news);
+        let randomNews = newsItems.sort(() => 0.5 - Math.random()).slice(0, 5);
+        document.getElementById("news-feed").textContent = randomNews.join(" | ");
+        document.getElementById("issue-count").textContent = data.length;
+        document.getElementById("latest-issue").textContent = data[0].news || "কোনো তথ্য নেই";
+      })
+      .catch(err => {
+        document.getElementById("news-feed").textContent = "নিউজ লোড করতে সমস্যা হচ্ছে!";
+      });
+
+    // 📬 যোগাযোগ ফর্ম সাবমিশন
+    document.getElementById("contact-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("আপনার তথ্য জমা হয়েছে!");
+      this.reset();
+    });
+
+    // 🗂️ ভোটার রেজিস্ট্রেশন সাবমিশন
+    document.getElementById("voter-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("ভোটার রেজিস্ট্রেশন সম্পন্ন!");
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>
