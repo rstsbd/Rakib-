@@ -18,6 +18,14 @@
       padding: 30px 20px;
     }
 
+    header img {
+      width: 150px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+    }
+
     header h1 {
       font-size: 32px;
       margin-bottom: 10px;
@@ -35,6 +43,177 @@
     }
 
     @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .countdown {
+      margin-top: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffccbc;
+    }
+
+    .slideshow-container {
+      max-width: 600px;
+      margin: 20px auto;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+    }
+
+    .slide img {
+      width: 100%;
+      height: auto;
+    }
+
+    .news-ticker {
+      background: #ffe0b2;
+      padding: 10px;
+      font-weight: bold;
+      color: #d84315;
+      margin: 10px;
+    }
+
+    section {
+      margin: 20px auto;
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #008040;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #006030;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔷 হেডার -->
+  <header>
+    <img src="candidate.jpg" alt="খন্দকার মুফঃ আব্দুর রাকিব">
+    <h1>খন্দকার মুফঃ আব্দুর রাকিব</h1>
+    <p>বাংলাদেশ জামায়াতে ইসলামী মনোনীত সংসদ সদস্য পদপ্রার্থী</p>
+    <p>আসন্ন জাতীয় সংসদ নির্বাচনে ৪৯ নওগাঁ-৪ (মান্দা) আসনে</p>
+    <p class="animated-text">⚖️ দাঁড়িপাল্লা মার্কায় ভোট দিন!</p>
+    <div class="countdown" id="countdown">ভোটের দিন পর্যন্ত সময় গণনা হচ্ছে...</div>
+  </header>
+
+  <!-- 📸 স্লাইড শো -->
+  <div class="slideshow-container">
+    <div class="slide fade"><img src="https://via.placeholder.com/600x300?text=সমাবেশ+১" alt="সমাবেশ ১"></div>
+    <div class="slide fade"><img src="https://via.placeholder.com/600x300?text=জনসংযোগ+২" alt="জনসংযোগ ২"></div>
+    <div class="slide fade"><img src="https://via.placeholder.com/600x300?text=ভোট+প্রচার+৩" alt="ভোট প্রচার ৩"></div>
+  </div>
+
+  <!-- 📰 নিউজ ফিড -->
+  <div class="news-ticker">
+    <marquee behavior="scroll" direction="left" id="news-feed">লোড হচ্ছে...</marquee>
+  </div>
+
+  <!-- 📬 যোগাযোগ ফর্ম -->
+  <section>
+    <h2>যোগাযোগ করুন</h2>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="নাম" required>
+      <input type="text" name="phone" placeholder="মোবাইল নম্বর" required>
+      <input type="text" name="address" placeholder="ঠিকানা">
+      <textarea name="issue" placeholder="সমস্যার বিবরণ" required></textarea>
+      <select name="category">
+        <option>শিক্ষা</option>
+        <option>স্বাস্থ্য</option>
+        <option>কৃষি</option>
+        <option>রাস্তাঘাট</option>
+        <option>বিদ্যুৎ</option>
+      </select>
+      <button type="submit">জমা দিন</button>
+    </form>
+  </section>
+
+  <!-- 🤝 সমর্থক / ভলেন্টিয়ার নিবন্ধন -->
+  <section>
+    <h2>ভলেন্টিয়ার / সমর্থক নিবন্ধন</h2>
+    <form id="supporter-form">
+      <input type="text" name="name" placeholder="নাম" required>
+      <input type="text" name="phone" placeholder="মোবাইল নম্বর" required>
+      <input type="text" name="area" placeholder="এলাকা">
+      <select name="role">
+        <option>ভলেন্টিয়ার</option>
+        <option>সমর্থক</option>
+        <option>পোলিং এজেন্ট</option>
+      </select>
+      <textarea name="interest" placeholder="আপনার আগ্রহ বা দায়িত্ব"></textarea>
+      <button type="submit">নিবন্ধন করুন</button>
+    </form>
+  </section>
+
+  <!-- 🗳️ সাধারণ ভোটার তথ্য -->
+  <section>
+    <h2>সাধারণ ভোটার তথ্য প্রদান</h2>
+    <form id="voter-form">
+      <input type="text" name="voter_name" placeholder="ভোটারের নাম" required>
+      <input type="text" name="nid" placeholder="জাতীয় পরিচয়পত্র নম্বর" required>
+      <input type="text" name="area" placeholder="আবাসস্থল">
+      <select name="support">
+        <option>ভোট দেব</option>
+        <option>ভেবে দেখছি</option>
+        <option>ভোট দেব না</option>
+      </select>
+      <button type="submit">তথ্য জমা দিন</button>
+    </form>
+  </section>
+
+  <script>
+    // ⏳ ভোটের কাউন্টডাউন
+    const electionDate = new Date("2025-12-30T08:00:00");
+    const countdownElement = document.getElementById("countdown");
+    function updateCountdown() {
+      const now = new Date();
+      const diff = electionDate - now;
+      if (diff <= 0) {
+        countdownElement.textContent = "আজই ভোট দিন! 🇧🇩";
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      countdownElement.textContent = `ভোটের দিন পর্যন্ত: ${days} দিন ${hours} ঘণ্টা ${minutes} মিনিট ${seconds} সেকেন্ড`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 📸 স্লাইড শো
+    let slideIndex = 0;
+    function showSlides() {
+      let slides = document.getElementsByClassName("slide");
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) { slideIndex[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/litvinovvo/js-loading-research/tree/0b82e007e07dfc73a2233452d5dd08cd2ba250e3/static%2Ffinal_tasks_dynamic%2Fcdn-tp1.df-tp.com%2Fe6-static-44%2Fjavascripts%2Fannouncement-bar.es6-35d2aae629dce6973d95617236ae095e.js?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/Joseaie/lifestyle-blog/tree/c3265dbf865ffbc84ef3dde196d6b8d18126c2e5/js%2Fscript.js?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "2")    @keyframes pulse {
       0% { opacity: 1; }
       50% { opacity: 0.5; }
       100% { opacity: 1; }
