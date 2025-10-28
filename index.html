@@ -6,16 +6,47 @@
   <style>
     body {
       font-family: 'SolaimanLipi', sans-serif;
-      background: #f4f4f4;
       margin: 0;
       padding: 0;
+      background: #f4f4f4;
       text-align: center;
     }
+
     header {
-      background: #008040;
+      background: linear-gradient(to right, #006030, #008040);
       color: white;
-      padding: 20px;
+      padding: 30px 20px;
     }
+
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 18px;
+      margin: 5px 0;
+    }
+
+    .animated-text {
+      font-size: 20px;
+      color: #ffeb3b;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .countdown {
+      margin-top: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffccbc;
+    }
+
     .slideshow-container {
       max-width: 600px;
       margin: 20px auto;
@@ -23,18 +54,178 @@
       border-radius: 10px;
       overflow: hidden;
     }
+
     .slide {
       display: none;
     }
+
     .slide img {
       width: 100%;
       height: auto;
     }
+
     .news-ticker {
       background: #ffe0b2;
       padding: 10px;
       font-weight: bold;
       color: #d84315;
+      margin: 10px;
+    }
+
+    section {
+      margin: 20px auto;
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #008040;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #006030;
+    }
+
+    .admin-panel {
+      background: #e0f7fa;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔷 হেডার -->
+  <header>
+    <h1>খন্দকার মুফঃ আব্দুর রাকিব</h1>
+    <p>বাংলাদেশ জামায়াতে ইসলামী মনোনীত সংসদ সদস্য পদপ্রার্থী</p>
+    <p>আসন্ন জাতীয় সংসদ নির্বাচনে ৪৯ নওগাঁ-৪ (মান্দা) আসনে</p>
+    <p class="animated-text">⚖️ দাঁড়িপাল্লা মার্কায় ভোট দিন!</p>
+    <div class="countdown" id="countdown">ভোটের দিন পর্যন্ত সময় গণনা হচ্ছে...</div>
+  </header>
+
+  <!-- 📸 স্লাইড শো -->
+  <div class="slideshow-container">
+    <div class="slide fade"><img src="slide1.jpg" alt="ছবি ১"></div>
+    <div class="slide fade"><img src="slide2.jpg" alt="ছবি ২"></div>
+    <div class="slide fade"><img src="slide3.jpg" alt="ছবি ৩"></div>
+  </div>
+
+  <!-- 📰 নিউজ ফিড -->
+  <div class="news-ticker">
+    <marquee behavior="scroll" direction="left" id="news-feed">লোড হচ্ছে...</marquee>
+  </div>
+
+  <!-- 📬 যোগাযোগ ফর্ম -->
+  <section>
+    <h2>যোগাযোগ করুন</h2>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="নাম" required>
+      <input type="text" name="phone" placeholder="মোবাইল নম্বর" required>
+      <input type="text" name="address" placeholder="ঠিকানা">
+      <textarea name="issue" placeholder="সমস্যার বিবরণ" required></textarea>
+      <select name="category">
+        <option>শিক্ষা</option>
+        <option>স্বাস্থ্য</option>
+        <option>কৃষি</option>
+        <option>রাস্তাঘাট</option>
+        <option>বিদ্যুৎ</option>
+      </select>
+      <button type="submit">জমা দিন</button>
+    </form>
+  </section>
+
+  <!-- 🗂️ ভোটার রেজিস্ট্রেশন -->
+  <section>
+    <h2>ভোটার রেজিস্ট্রেশন</h2>
+    <form id="voter-form">
+      <input type="text" name="voter_name" placeholder="ভোটারের নাম" required>
+      <input type="text" name="nid" placeholder="জাতীয় পরিচয়পত্র নম্বর" required>
+      <input type="text" name="area" placeholder="আবাসস্থল">
+      <button type="submit">রেজিস্টার করুন</button>
+    </form>
+  </section>
+
+  <!-- 🛠️ অ্যাডমিন প্যানেল -->
+  <section class="admin-panel">
+    <h2>অ্যাডমিন প্যানেল (ডেমো)</h2>
+    <p>মোট সমস্যার সংখ্যা: <span id="issue-count">0</span></p>
+    <p>সর্বশেষ সমস্যা: <span id="latest-issue">লোড হচ্ছে...</span></p>
+  </section>
+
+  <script>
+    // ⏳ ভোটের কাউন্টডাউন
+    const electionDate = new Date("2025-12-30T08:00:00");
+    const countdownElement = document.getElementById("countdown");
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = electionDate - now;
+      if (diff <= 0) {
+        countdownElement.textContent = "আজই ভোট দিন! 🇧🇩";
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      countdownElement.textContent = `ভোটের দিন পর্যন্ত: ${days} দিন ${hours} ঘণ্টা ${minutes} মিনিট ${seconds} সেকেন্ড`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 📸 স্লাইড শো
+    let slideIndex = 0;
+    showSlides();
+    function showSlides() {
+      let slides = document.getElementsByClassName("slide");
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) { slideIndex = 1 }
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 3000);
+    }
+
+    // 📰 SheetDB API থেকে নিউজ ফিড
+    fetch("https://sheetdb.io/api/v1/YOUR_SHEETDB_ID")
+      .then(res => res.json())
+      .then(data => {
+        let newsItems = data.map(item => item.news);
+        let randomNews = newsItems.sort(() => 0.5 - Math.random()).slice(0, 5);
+        document.getElementById("news-feed").textContent = randomNews.join(" | ");
+        document.getElementById("issue-count").textContent = data.length;
+        document.getElementById("latest-issue").textContent = data[0].news || "কোনো তথ্য নেই";
+      })
+      .catch(err => {
+        document.getElementById("news-feed").textContent = "নিউজ লোড করতে সমস্যা হচ্ছে!";
+      });
+
+    // 📬 যোগাযোগ ফর্ম সাবমিশন
+    document.getElementById("contact-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("আপনার তথ্য জমা হয়েছে!");
+      this.reset();
+    });
+
+    // 🗂️ ভোটার রেজিস্ট্রেশন সাবমিশন
+    document[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/litvinovvo/js-loading-research/tree/0b82e007e07dfc73a2233452d5dd08cd2ba250e3/static%2Ffinal_tasks_dynamic%2Fcdn-tp1.df-tp.com%2Fe6-static-44%2Fjavascripts%2Fannouncement-bar.es6-35d2aae629dce6973d95617236ae095e.js?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/Joseaie/lifestyle-blog/tree/c3265dbf865ffbc84ef3dde196d6b8d18126c2e5/js%2Fscript.js?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "2")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/Melted-potato/yhdental/tree/8174c5ecdff4954fbc377c357f498e1678d280a5/script.js?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "3")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/rialbeg/instagram-home-clone/tree/9f9d887cabfe905c136491d4338bc960c5dd1d20/assets%2Fjs%2Fscripts.js?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "4")      color: #d84315;
       margin: 10px;
     }
     section {
